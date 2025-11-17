@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS STYLES --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%); /* Gradasi Biru Muda */
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 90%;
+            width: 750px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            border: 5px solid #2196f3; /* Biru Primer */
+            position: relative; /* Penting untuk confetti */
+            overflow: hidden;
+        }
+
+        /* Confetti Container */
+        #confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Agar tidak menghalangi klik */
+            z-index: 50;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #1e88e5; /* Biru Cerah */
+            font-size: 3.5em;
+            margin-bottom: 5px;
+            display: inline-block;
+            animation: shake 2s infinite; 
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        h2 {
+            color: #64b5f6;
+            font-size: 1.6em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        /* Konten Halaman */
+        .page {
+            display: none; /* Disembunyikan secara default oleh JS */
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* Gaya Tombol */
+        .btn {
+            background-color: #42a5f5; /* Biru Menarik */
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 4px #1976d2;
+        }
+        .btn:hover {
+            background-color: #1976d2;
+        }
+        .btn:active {
+            box-shadow: 0 2px #1976d2;
+            transform: translateY(2px);
+        }
+
+        /* Pesan (Typing Effect) */
+        .message p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            text-align: justify;
+            padding: 5px 0;
+            opacity: 0; /* Disembunyikan untuk efek typing */
+            transition: opacity 0.5s;
+        }
+
+        /* --- FOTO DUMP STYLES --- */
+        .photo-dump-section {
+            padding: 20px 0;
+        }
+
+        .photo-dump-section h3 {
+            color: #1e88e5;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .photo-dump-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .photo-dump-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, filter 0.3s;
+        }
+        
+        /* Animasi kursor dan kejutan */
+        .photo-dump-grid img:hover {
+            transform: scale(1.1) rotate(-3deg);
+            z-index: 10;
+        }
+        .crazy-zoom {
+            transform: scale(1.5) rotate(10deg) !important;
+            filter: hue-rotate(90deg) !important;
+            border: 5px solid red !important;
+        }
+
+        /* Music Player dan Signature sama */
+        .music-player { margin-top: 40px; padding: 15px; background-color: #e3f2fd; border-radius: 10px; border: 1px dashed #42a5f5; }
+        .youtube-embed { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 15px auto; }
+        .youtube-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px; }
+        .signature { margin-top: 40px; font-size: 1.2em; font-weight: bold; color: #555; text-align: right; border-top: 1px solid #ccc; padding-top: 15px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="confetti-container"></div>
+    
+    <h1>Happy Birthday!!!!</h1>
+    <h2>From sipii mooo for cekudd ku</h2>
+
+    <div id="page1" class="page active">
+        <div id="message-content" style="background-color: #e3f2fd; border-left: 6px solid #42a5f5; border-radius: 10px; padding: 20px;">
+            </div>
+
+        <button class="btn" onclick="nextPage()">Gaskeun pencet ce 📸</button>
+    </div>
+    
+    <div id="page2" class="page">
+        <div class="music-player">
+            <p style="font-size: 1.1em; color: #00838f; font-weight: bold;">🎶 Location Unknown feat. Beka. - HONNE</p>
+            <div class="youtube-embed">
+                <iframe
+                    src="https://www.youtube.com/embed/btIQvYcLNoI?autoplay=0"
+                    title="HONNE - Location Unknown feat. Beka."
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <div class="photo-dump-section">
+            <h3>✨ eakkk azek asoyy! Flashback Cekudd! ✨</h3>
+            <p style="margin-bottom: 20px;">*Arahkan kursor ke foto*</p>
+            <button class="btn" id="surprise-btn">KLICK ME!</button>
+            <div class="photo-dump-grid" id="photo-grid">
+                <img src="cece1.jpg" alt="Foto Kenangan 1">
+                <img src="cece5.jpg" alt="Foto Kenangan 2">
+                <img src="cece3.jpg" alt="Foto Kenangan 3">
+                <img src="cece6.jpg" alt="Foto Kenangan 4">
+                <img src="cece2.jpg" alt="Foto Kenangan 5">
+                <img src="cece8.jpg" alt="Foto Kenangan 6">
+                <img src="cece4.jpg" alt="Foto Kenangan 7">
+                <img src="kita1.jpg" alt="Foto Kenangan 8">
+            </div>
+            <p style="font-size: 0.9em; color: #777; margin-top: 15px;">GINI DIANG SI SIMPLE GADA MENARIK NYA HEHEH MAAF YAA LOVE U </p>
+        </div>
+        
+        <div class="signature">
+            FROM SIPI MOO,
+            <br>
+            CALISTA
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- JAVASCRIPT ANIMASI INTERAKTIF ---
+
+    const messageLines = [
+        "EYYOWW WHAST'UP BROOO",
+        "PLAY DULU LAGI KITA ALIAS CIRS",
+        "<br>",
+        "Liat betapa bahenol nya tulisan di atas bergoyang,kaya kamu kalo liat sandi sama umam wkakakaka.",
+        "Ce.... HAPPY BIRTHDAY yaaa",
+        "Semoga dengan bertambahnya umur kamu sekarang bakal jadi pembuka buat semua kebahagiaan yg udah kamu nanti'",
+        "selalu dalam lindungan nya Allah,selalu ada di jalan yang benar,di berkahin umurnya,selalu sehat,jangan lupa minum",
+        "jangan pernah ngerasa kalo kamu itu sendiri ce...inget aku,inget kita,inget cirs...",
+        "ce...miss u so much tekuat asli",
+        "cee jangan berubah,jangan pernah ngubah sifat sikap kamu",
+        "jujur wakaka,aku bikin ini h-2 alias tanggal 15,walaupun acak kadut kie alias aneh gapapa yak wakaka",
+        "flashback dikit ah,yukk scroll",
+    ];
+
+    const messageContent = document.getElementById('message-content');
+    const nextButton = document.querySelector('#page1 .btn');
+    nextButton.style.display = 'none'; // Sembunyikan tombol NEXT awal
+
+    // Fungsi Typing Effect
+    function startTypingEffect() {
+        let delay = 0;
+        messageLines.forEach((line, index) => {
+            setTimeout(() => {
+                const p = document.createElement('p');
+                p.innerHTML = line;
+                messageContent.appendChild(p);
+                // Setelah ditambahkan ke DOM, buat p terlihat
+                setTimeout(() => { p.style.opacity = '1'; }, 50); 
+
+                // Tampilkan tombol Next setelah semua pesan selesai
+                if (index === messageLines.length - 1) {
+                    setTimeout(() => { nextButton.style.display = 'block'; }, 500);
+                }
+            }, delay);
+            // Tambahkan delay yang lebih lama untuk baris yang lebih panjang
+            delay += (line.length > 50 ? 2000 : 1000); 
+        });
+    }
+
+    // Fungsi Navigasi Halaman
+    function nextPage() {
+        document.getElementById('page1').classList.remove('active');
+        document.getElementById('page2').classList.add('active');
+        // Panggil animasi Confetti saat pindah ke halaman foto
+        startConfetti();
+    }
+
+    // Fungsi Animasi Kejutan Foto (Zoom Gila)
+    document.getElementById('surprise-btn').addEventListener('click', function() {
+        const photos = document.querySelectorAll('#photo-grid img');
+        
+        // Nonaktifkan/hapus animasi crazy-zoom yang sudah ada
+        photos.forEach(img => img.classList.remove('crazy-zoom'));
+
+        // Pilih foto secara acak
+        const randomIndex = Math.floor(Math.random() * photos.length);
+        const randomPhoto = photos[randomIndex];
+
+        // Terapkan animasi baru
+        randomPhoto.classList.add('crazy-zoom');
+
+        // Kembalikan normal setelah 1.5 detik
+        setTimeout(() => {
+            randomPhoto.classList.remove('crazy-zoom');
+        }, 1500);
+
+        // Ubah teks tombol sebentar
+        this.textContent = 'HEHEHE!';
+        setTimeout(() => {
+            this.textContent = 'CLICK LAGI! ';
+        }, 1500);
+    });
+
+    // Panggil efek mengetik saat halaman dimuat
+    startTypingEffect();
+
+
+    // --- CONFETTI JS SEDERHANA ---
+    function startConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#2196f3', '#bbdefb', '#e3f2fd', '#42a5f5'];
+
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.position = 'absolute';
+            confetti.style.borderRadius = '50%';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = Math.random() * 100 + 'vh';
+            
+            // Animasi jatuh dan berputar
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite, spin ${Math.random() * 2 + 1}s linear infinite`;
+            confetti.style.opacity = Math.random() + 0.5;
+
+            container.appendChild(confetti);
+        }
+
+        // Tambahkan keyframes untuk Confetti ke dalam style sheet
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                0% { transform: translateY(-100vh) rotate(0deg); }
+                100% { transform: translateY(100vh) rotate(360deg); }
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Hapus Confetti setelah 10 detik agar tidak terlalu ramai
+        setTimeout(() => {
+            container.innerHTML = ''; 
+        }, 10000);
+    }
+</script>
+
+</body>
+</html>
